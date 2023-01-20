@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit"
-import loginReducer from "./loginSlice"
 import authenticationReducer from "./authenticationSlice"
 import funfactSlice from "./funfactSlice"
 import contactInfoSlice from "./contactInfoSlice"
@@ -8,7 +7,6 @@ import projectSlice from "./projectSlice"
 
 export const store = configureStore({
     reducer: {
-        login: loginReducer,
         authentication: authenticationReducer,
         funfactSlice: funfactSlice,
         contactInfoSlice: contactInfoSlice,

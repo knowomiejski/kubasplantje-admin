@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Status } from "./enums/status";
 import type RequestStatus from "./interfaces/requestStatus";
 import { RootState } from "./store";
@@ -78,6 +78,27 @@ export const authenticationSlice = createSlice({
             console.log('REJECTED', action)
             state.tokenStatus.status = Status.FAILED
         })
+
+
+        builder
+        .addCase(logoutAuthentication.pending, (state, action) => {
+            console.log('PENDING', action)
+            state.tokenStatus.status = Status.LOADING
+        })
+        .addCase(logoutAuthentication.fulfilled, (state, action) => {
+            console.log('FULFILLED', action)
+            try {
+                state.tokenStatus.status = Status.IDLE
+                localStorage.setItem('kp-login', action.payload)
+            } catch (e) {
+                state.tokenStatus.status = Status.FAILED
+                console.log(e)
+            }
+        })
+        .addCase(logoutAuthentication.rejected, (state, action) => {
+            console.log('REJECTED', action)
+            state.tokenStatus.status = Status.FAILED
+        })
     }
 })
 
@@ -97,6 +118,16 @@ export const sendAuthentication = createAsyncThunk<string>('authentication/sendA
     const response = await axios.post('http://localhost:8080/api/v1/auth/token', {
         userName: state.authentication.authenticationForm.username,
         password: state.authentication.authenticationForm.password
+    })
+    return response.data
+})
+
+export const logoutAuthentication = createAsyncThunk<string>('authentication/logoutAuthentication', async (loginData, {getState}) => {
+    const state = getState() as RootState
+    const response = await axios.get('http://localhost:8080/api/v1/auth/logout',{
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem('kp-login')}`
+        }
     })
     return response.data
 })

@@ -1,9 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { TechCategories } from "../enums/TechCategories";
 import { ITech } from "../interfaces/ITech";
+import { Status } from "../store/enums/status";
 import { AppDispatch } from "../store/store";
-import { addNewTech, deleteTech, fetchAllTechs, updateExistingTech } from "../store/techSlice";
+import { addNewTech, clearErrors, deleteTech, fetchAllTechs, selectDeleteTechRequestStatus, updateExistingTech } from "../store/techSlice";
 import globalUtility from "../utility/globalUtility";
 import Button from "./Button";
 import DropdownField from "./DropdownField";
@@ -16,6 +18,7 @@ interface Props {
 
 const TechListItem = ({tech, newTech}: Props) => {
     const dispatch = useDispatch<AppDispatch>()
+    const deleteTechRequestStatus = useSelector(selectDeleteTechRequestStatus)
     const initialTech = {
         id: tech.id,
         techName: tech.techName,
@@ -28,6 +31,32 @@ const TechListItem = ({tech, newTech}: Props) => {
     const [newTechName, setNewTechName] = useState(tech.techName)
     const [newTechSkill, setNewTechSkill] = useState(tech.skillRating)
     const [category, setCategory] = useState(tech.category)
+
+    const splitString = (originalString: string): string[] => {
+        const splitOnSpace = originalString.split(' ')
+        const finalSplitArray = []
+        let oldTempString = ''
+        let newTempString = ''
+        for(let i = 0; i < splitOnSpace.length; i++) {
+            const parsedSplitString = splitOnSpace[i] + ' '
+            newTempString = oldTempString + parsedSplitString
+            const lastLoop = (i + 1) === splitOnSpace.length
+            if (newTempString.length >= 33 && !lastLoop) {
+                finalSplitArray.push(oldTempString.toLowerCase())
+                newTempString = ''
+                oldTempString = parsedSplitString
+                continue
+            } else if (newTempString.length >= 33 && lastLoop) {
+                finalSplitArray.push(oldTempString.toLowerCase())
+                finalSplitArray.push(parsedSplitString.toLowerCase().trimEnd())
+            } else if (newTempString.length < 33 && lastLoop) {
+                finalSplitArray.push(newTempString.toLowerCase().trimEnd())
+            } else {
+                oldTempString = newTempString
+            }
+        }
+        return finalSplitArray.length > 0 ? finalSplitArray : [originalString]
+    }
 
     const updateTechName = (fieldNameString: string, input: string) => {
         // setNewTechName(input)
@@ -56,18 +85,21 @@ const TechListItem = ({tech, newTech}: Props) => {
     }
 
     const addTech = async () => {
+        dispatch(clearErrors())
         await dispatch(addNewTech(updatedTech))
         await dispatch(fetchAllTechs())
         setUpdatedTech({...initialTech})
     }
 
     const editTech = async () => {
+        dispatch(clearErrors())
         await dispatch(updateExistingTech(updatedTech))
         await dispatch(fetchAllTechs())
     }
 
     const removeTech = async () => {
         if (updatedTech.id) {
+            dispatch(clearErrors())
             await dispatch(deleteTech(updatedTech.id))
             await dispatch(fetchAllTechs())
         }
@@ -211,6 +243,28 @@ const TechListItem = ({tech, newTech}: Props) => {
                     <Fragment/>
                 }
             </div>
+            {deleteTechRequestStatus.error && deleteTechRequestStatus.id === updatedTech.id ?
+                <Fragment>
+                    <div className="flex justify-between">
+                        <div className="">|</div>
+                        <div className="">|</div>
+                    </div>
+                    {
+                    splitString(deleteTechRequestStatus.error).map((splitError, i) => (
+                        <div key={i} className="flex justify-between">
+                            <div className="">|</div>
+                            <div className="w-full">
+                                <span className="text-red-500 ml-1">{splitError}</span>
+                            </div>
+                            <div className="">|</div>
+                        </div>
+                    ))
+                    }
+                </Fragment>
+                :
+                <Fragment/>
+
+            }
             {newTech ?
                 <div>
                     <Button

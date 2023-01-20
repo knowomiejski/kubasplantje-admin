@@ -5,6 +5,8 @@ const Button = (props: IButtonProps) => {
 
     return (
         <div
+            tabIndex={0}
+            onKeyDown={props.onKeyDown}
             onClick={props.onClick}
             className={"flex flex-col leading-4 cursor-pointer " + props.hoverColor}
         >

@@ -8,7 +8,6 @@ import PageTitle from "../components/PageTitle";
 import { IPageProps } from "../interfaces/IPage";
 import { setUsername, setPassword, sendAuthentication, selectRequestStatus, selectTokenStatus, checkAuthentication } from "../store/authenticationSlice";
 import { Status } from "../store/enums/status";
-import { selectPassword, selectUsername } from "../store/loginSlice";
 import { AppDispatch } from "../store/store";
 
 
@@ -26,6 +25,10 @@ const LoginPage = (props: IPageProps) => {
 		}
 	}, [tokenStatus.status])
 
+	const loginEnter = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if(e.key === 'Enter') login()
+	}
+
 	const login = async () =>  {
 		await dispatch(sendAuthentication())
 		await dispatch(checkAuthentication())
@@ -40,12 +43,12 @@ const LoginPage = (props: IPageProps) => {
 	}
 
 	return (
-		<div>
+		<div onKeyDown={loginEnter} >
 			<PageTitle pageTitleProp={props.pageTitleProp}/>
 			{requestStatus.status === Status.FAILED && <div>{requestStatus.error}</div>}
 			<InputField onChange={(field, input) => logUsername(input)} name="username" label="username" margin="my-4" placeholder="kobe"/>
 			<InputField onChange={(field, input) => logPassword(input)} name="password" label="password" margin="my-4" placeholder="password" password/>
-			<Button onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => login()} color='text-primary' hoverColor='hover:text-primary'>login</Button>
+			<Button onClick={() => login()} color='text-primary' hoverColor='hover:text-primary'>login</Button>
 		</div>
 	);
 };
