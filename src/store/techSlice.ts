@@ -70,14 +70,13 @@ export const techSlice = createSlice({
     extraReducers(builder) {
         builder
         .addCase(fetchAllTechs.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.fetchAllRequestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(fetchAllTechs.fulfilled, (state, action) => {
-            console.log('FULFILLED ', action.payload)
             try {
                 const convertedTechs = action.payload.map(tech => {
                     tech.new = false
@@ -89,7 +88,7 @@ export const techSlice = createSlice({
                     error: null
                 }
             } catch (e) {
-                console.log(e)
+                console.log('something wrong')
                 state.fetchAllRequestStatus = {
                     status: Status.FAILED,
                     error: null
@@ -97,7 +96,7 @@ export const techSlice = createSlice({
             }
         })
         .addCase(fetchAllTechs.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.fetchAllRequestStatus = {
                 status: Status.FAILED,
@@ -107,21 +106,20 @@ export const techSlice = createSlice({
 
         builder
         .addCase(addNewTech.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.addNewRequestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(addNewTech.fulfilled, (state, action) => {
-            console.log('FULFILLED ', action.payload)
             state.addNewRequestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(addNewTech.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.addNewRequestStatus = {
                 status: Status.FAILED,
@@ -131,21 +129,20 @@ export const techSlice = createSlice({
 
         builder
         .addCase(updateExistingTech.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.updateExistingRequestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(updateExistingTech.fulfilled, (state, action) => {
-            console.log('FULFILLED ', action.payload)
             state.updateExistingRequestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(updateExistingTech.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.updateExistingRequestStatus = {
                 status: Status.FAILED,
@@ -155,21 +152,19 @@ export const techSlice = createSlice({
 
         builder
         .addCase(deleteTech.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.deleteRequestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(deleteTech.fulfilled, (state, action) => {
-            console.log('FULFILLED ', action.payload)
             state.deleteRequestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(deleteTech.rejected, (state, action) => {
-            console.log('REJECTED: ', action)
             const errorObj = action.payload as errorDeleteResponse
             state.deleteRequestStatus = {
                 status: Status.FAILED,
@@ -188,7 +183,6 @@ export const fetchAllTechs = createAsyncThunk<ITech[]>('tech/fetchAllTechs', asy
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 
@@ -204,7 +198,6 @@ export const addNewTech = createAsyncThunk<string, ITech>('tech/addNewTech', asy
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 
@@ -220,7 +213,6 @@ export const updateExistingTech = createAsyncThunk<string, ITech>('tech/updateTe
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 

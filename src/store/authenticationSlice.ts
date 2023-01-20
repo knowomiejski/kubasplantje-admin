@@ -33,14 +33,12 @@ export const authenticationSlice = createSlice({
     extraReducers(builder) {
         builder
         .addCase(sendAuthentication.pending, (state, action) => {
-            console.log('PENDING', action)
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(sendAuthentication.fulfilled, (state, action) => {
-            console.log('FULFILLED', action.payload)
             state.requestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
@@ -48,11 +46,11 @@ export const authenticationSlice = createSlice({
             try {
                 localStorage.setItem('kp-login', action.payload)
             } catch (e) {
-                console.log(e)
+                console.log('something wrong')
             }
         })
         .addCase(sendAuthentication.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.requestStatus = {
                 status: Status.FAILED,
@@ -62,41 +60,41 @@ export const authenticationSlice = createSlice({
 
         builder
         .addCase(checkAuthentication.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.tokenStatus.status = Status.LOADING
         })
         .addCase(checkAuthentication.fulfilled, (state, action) => {
-            console.log('FULFILLED', action)
+
             try {
                 state.tokenStatus.status = Status.SUCCEEDED
             } catch (e) {
                 state.tokenStatus.status = Status.FAILED
-                console.log(e)
+                console.log('something wrong')
             }
         })
         .addCase(checkAuthentication.rejected, (state, action) => {
-            console.log('REJECTED', action)
+
             state.tokenStatus.status = Status.FAILED
         })
 
 
         builder
         .addCase(logoutAuthentication.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.tokenStatus.status = Status.LOADING
         })
         .addCase(logoutAuthentication.fulfilled, (state, action) => {
-            console.log('FULFILLED', action)
+
             try {
                 state.tokenStatus.status = Status.IDLE
                 localStorage.setItem('kp-login', action.payload)
             } catch (e) {
                 state.tokenStatus.status = Status.FAILED
-                console.log(e)
+                console.log('something wrong')
             }
         })
         .addCase(logoutAuthentication.rejected, (state, action) => {
-            console.log('REJECTED', action)
+
             state.tokenStatus.status = Status.FAILED
         })
     }
@@ -109,7 +107,6 @@ export const checkAuthentication = createAsyncThunk<string>('authentication/chec
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 

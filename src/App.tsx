@@ -167,12 +167,11 @@ const App = () => {
 	useEffect(() => {
 		const checkAuth = async () => {
 			await dispatch(checkAuthentication())
-			console.log('heyo')
 		}
 		try {
 			checkAuth()
 		} catch (error) {
-			console.log('first useEffect error')
+			console.log('error')
 		}
 	}, [])
 

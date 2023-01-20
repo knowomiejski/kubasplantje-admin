@@ -34,14 +34,13 @@ export const projectSlice = createSlice({
     extraReducers(builder) {
         builder
         .addCase(fetchAllProjects.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(fetchAllProjects.fulfilled, (state, action) => {
-            console.log('FULFILLED ', action.payload)
             try {
                 const convertedProjects = action.payload.map(project => {
                     project.new = false
@@ -53,7 +52,7 @@ export const projectSlice = createSlice({
                     error: null
                 }
             } catch (e) {
-                console.log(e)
+                console.log('something wrong')
                 state.requestStatus = {
                     status: Status.FAILED,
                     error: null
@@ -61,7 +60,7 @@ export const projectSlice = createSlice({
             }
         })
         .addCase(fetchAllProjects.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.requestStatus = {
                 status: Status.FAILED,
@@ -71,21 +70,20 @@ export const projectSlice = createSlice({
 
         builder
         .addCase(addNewProject.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(addNewProject.fulfilled, (state, action) => {
-            console.log('FULFILLED ', action.payload)
             state.requestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(addNewProject.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.requestStatus = {
                 status: Status.FAILED,
@@ -95,21 +93,20 @@ export const projectSlice = createSlice({
 
         builder
         .addCase(updateExistingProject.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(updateExistingProject.fulfilled, (state, action) => {
-            console.log('FULFILLED ', action.payload)
             state.requestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(updateExistingProject.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.requestStatus = {
                 status: Status.FAILED,
@@ -119,21 +116,20 @@ export const projectSlice = createSlice({
 
         builder
         .addCase(deleteProject.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(deleteProject.fulfilled, (state, action) => {
-            console.log('FULFILLED ', action.payload)
             state.requestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(deleteProject.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.requestStatus = {
                 status: Status.FAILED,
@@ -151,7 +147,6 @@ export const fetchAllProjects = createAsyncThunk<IProject[]>('project/fetchAllPr
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 
@@ -166,7 +161,6 @@ export const addNewProject = createAsyncThunk<string, IProject>('project/addNewP
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 
@@ -181,7 +175,6 @@ export const updateExistingProject = createAsyncThunk<string, IProject>('project
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 
@@ -193,7 +186,6 @@ export const deleteProject = createAsyncThunk<string, number>('project/deletePro
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 

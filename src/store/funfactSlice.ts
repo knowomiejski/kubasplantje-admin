@@ -30,15 +30,13 @@ export const funfactSlice = createSlice({
     extraReducers(builder) {
         builder
         .addCase(fetchAllFunFacts.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(fetchAllFunFacts.fulfilled, (state, action) => {
-            console.log('FULFILLED fetchAllFunFacts', action.payload)
-
             try {
                 const convertedFunFacts = action.payload.map(funfact => {
                     funfact.new = false
@@ -50,7 +48,7 @@ export const funfactSlice = createSlice({
                     error: null
                 }
             } catch (e) {
-                console.log(e)
+                console.log('something wrong')
                 state.requestStatus = {
                     status: Status.FAILED,
                     error: null
@@ -58,7 +56,7 @@ export const funfactSlice = createSlice({
             }
         })
         .addCase(fetchAllFunFacts.rejected, (state, action) => {
-            console.log('REJECTED: ', action.error)
+
             const error = action.error.message ? action.error.message : null
             state.requestStatus = {
                 status: Status.FAILED,
@@ -68,21 +66,21 @@ export const funfactSlice = createSlice({
 
         builder
         .addCase(addNewFunFact.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(addNewFunFact.fulfilled, (state, action) => {
-            console.log('FULFILLED', action)
+
             state.requestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(addNewFunFact.rejected, (state, action) => {
-            console.log('REJECTED', action)
+
             state.requestStatus = {
                 status: Status.FAILED,
                 error: null
@@ -92,21 +90,21 @@ export const funfactSlice = createSlice({
 
         builder
         .addCase(updateExistingFunFact.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(updateExistingFunFact.fulfilled, (state, action) => {
-            console.log('FULFILLED', action)
+
             state.requestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(updateExistingFunFact.rejected, (state, action) => {
-            console.log('REJECTED', action)
+
             state.requestStatus = {
                 status: Status.FAILED,
                 error: null
@@ -115,21 +113,21 @@ export const funfactSlice = createSlice({
 
         builder
         .addCase(deleteFunFact.pending, (state, action) => {
-            console.log('PENDING', action)
+
             state.requestStatus = {
                 status: Status.LOADING,
                 error: null
             }
         })
         .addCase(deleteFunFact.fulfilled, (state, action) => {
-            console.log('FULFILLED', action)
+
             state.requestStatus = {
                 status: Status.SUCCEEDED,
                 error: null
             }
         })
         .addCase(deleteFunFact.rejected, (state, action) => {
-            console.log('REJECTED', action)
+
             state.requestStatus = {
                 status: Status.FAILED,
                 error: null
@@ -147,13 +145,11 @@ export const fetchAllFunFacts = createAsyncThunk<IFunFact[]>('funfact/getAllFunF
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
     })
-    console.log(response.data)
     return response.data
 })
 
 export const addNewFunFact = createAsyncThunk<string, IFunFact>('funfact/postNewFunFact', async (funfact: IFunFact, {getState}) => {
     const state = getState() as RootState
-    console.log('funfact: ', funfact)
     const response = await axios.post('http://localhost:8080/api/v1/funfact', {
         ...funfact
     },
