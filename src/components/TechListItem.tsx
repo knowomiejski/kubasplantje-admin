@@ -5,7 +5,7 @@ import { TechCategories } from "../enums/TechCategories";
 import { ITech } from "../interfaces/ITech";
 import { Status } from "../store/enums/status";
 import { AppDispatch } from "../store/store";
-import { addNewTech, clearErrors, deleteTech, fetchAllTechs, selectDeleteTechRequestStatus, updateExistingTech } from "../store/techSlice";
+import { addNewTech, clearErrors, deleteTech, fetchAllTechs, selectDeleteTechRequestStatus, selectFetchAllTechsRequestStatus, updateExistingTech } from "../store/techSlice";
 import globalUtility from "../utility/globalUtility";
 import Button from "./Button";
 import DropdownField from "./DropdownField";
@@ -18,6 +18,7 @@ interface Props {
 
 const TechListItem = ({tech, newTech}: Props) => {
     const dispatch = useDispatch<AppDispatch>()
+    const fetchAllTechsRequestStatus = useSelector(selectFetchAllTechsRequestStatus)
     const deleteTechRequestStatus = useSelector(selectDeleteTechRequestStatus)
     const initialTech = {
         id: tech.id,
@@ -105,8 +106,14 @@ const TechListItem = ({tech, newTech}: Props) => {
         }
     }
 
+    useEffect(() => {
+        console.log('test', initialTech)
+    }, [initialTech.usedInProjects])
+
     return (
         <div className="my-1">
+            {fetchAllTechsRequestStatus.status === Status.SUCCEEDED ?
+            <div>
             <div className="text-center">+----------------------------------+</div>
             <div>
                 {newTech === false ?
@@ -263,7 +270,6 @@ const TechListItem = ({tech, newTech}: Props) => {
                 </Fragment>
                 :
                 <Fragment/>
-
             }
             {newTech ?
                 <div>
@@ -292,6 +298,10 @@ const TechListItem = ({tech, newTech}: Props) => {
                         delete tech
                     </Button>
                 </div>
+            }
+            </div>
+            :
+            <div>loading...</div>
             }
         </div>
     );

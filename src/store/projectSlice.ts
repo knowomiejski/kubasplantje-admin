@@ -4,6 +4,7 @@ import type RequestStatus from "./interfaces/requestStatus";
 import { RootState } from "./store";
 import axios from "axios";
 import { IProject } from "../interfaces/IProject";
+import { ITech } from "../interfaces/ITech";
 
 const initialProjectState = {
     projectsData: {
@@ -43,6 +44,14 @@ export const projectSlice = createSlice({
         .addCase(fetchAllProjects.fulfilled, (state, action) => {
             try {
                 const convertedProjects = action.payload.map(project => {
+                    project.usedTechIds = []
+                    if (project.usedTechs === undefined) project.usedTechs = []
+                    project.usedTechs.map((usedTech: ITech) => {
+                        if (usedTech.id !== undefined) {
+                            //@ts-ignore
+                            project.usedTechIds.push(usedTech.id)
+                        }
+                    });
                     project.new = false
                     return project
                 })

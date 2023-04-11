@@ -80,6 +80,7 @@ export const techSlice = createSlice({
             try {
                 const convertedTechs = action.payload.map(tech => {
                     tech.new = false
+                    tech.usedInProjects = [...tech.usedInProjectIds]
                     return tech
                 })
                 state.techsData.techs = convertedTechs

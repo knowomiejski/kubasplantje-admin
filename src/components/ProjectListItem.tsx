@@ -24,7 +24,7 @@ const ProjectListItem = ({project,  newProject, allAvailibleTechs}: Props) => {
         description: project.description,
         client: project.client,
         link: project.link,
-        usedTechIds: project.usedTechIds,
+        usedTechIds: project.usedTechIds ? project.usedTechIds : [],
         new: project.new
     }
     const [updatedProject, setUpdatedProject] = useState<IProject>({...initialProject})
