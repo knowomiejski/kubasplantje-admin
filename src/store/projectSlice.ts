@@ -141,7 +141,7 @@ export const projectSlice = createSlice({
 
 export const fetchAllProjects = createAsyncThunk<IProject[]>('project/fetchAllProjects', async (project, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.get('http://localhost:8080/api/v1/project',
+    const response = await axios.get('https://admin.kubasplantje.nl:8443/api/v1/project',
     {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
@@ -152,7 +152,7 @@ export const fetchAllProjects = createAsyncThunk<IProject[]>('project/fetchAllPr
 
 export const addNewProject = createAsyncThunk<string, IProject>('project/addNewProject', async (project: IProject, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.post('http://localhost:8080/api/v1/project',
+    const response = await axios.post('https://admin.kubasplantje.nl:8443/api/v1/project',
     {
         ...project
     },
@@ -166,7 +166,7 @@ export const addNewProject = createAsyncThunk<string, IProject>('project/addNewP
 
 export const updateExistingProject = createAsyncThunk<string, IProject>('project/updateExistingProject', async (project: IProject, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.patch('http://localhost:8080/api/v1/project',
+    const response = await axios.patch('https://admin.kubasplantje.nl:8443/api/v1/project',
     {
         ...project
     },
@@ -180,7 +180,7 @@ export const updateExistingProject = createAsyncThunk<string, IProject>('project
 
 export const deleteProject = createAsyncThunk<string, number>('project/deleteProject', async (projectId: number, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.delete(`http://localhost:8080/api/v1/project/${projectId}`,
+    const response = await axios.delete(`https://admin.kubasplantje.nl:8443/api/v1/project/${projectId}`,
     {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`

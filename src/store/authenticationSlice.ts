@@ -102,7 +102,7 @@ export const authenticationSlice = createSlice({
 
 export const checkAuthentication = createAsyncThunk<string>('authentication/checkAuthentication', async (loginData, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.get('http://localhost:8080/api/v1/auth/check', {
+    const response = await axios.get('https://admin.kubasplantje.nl:8443/api/v1/auth/check', {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }
@@ -112,7 +112,7 @@ export const checkAuthentication = createAsyncThunk<string>('authentication/chec
 
 export const sendAuthentication = createAsyncThunk<string>('authentication/sendAuthentication', async (loginData, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.post('http://localhost:8080/api/v1/auth/token', {
+    const response = await axios.post('https://admin.kubasplantje.nl:8443/api/v1/auth/token', {
         userName: state.authentication.authenticationForm.username,
         password: state.authentication.authenticationForm.password
     })
@@ -121,7 +121,7 @@ export const sendAuthentication = createAsyncThunk<string>('authentication/sendA
 
 export const logoutAuthentication = createAsyncThunk<string>('authentication/logoutAuthentication', async (loginData, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.get('http://localhost:8080/api/v1/auth/logout',{
+    const response = await axios.get('https://admin.kubasplantje.nl:8443/api/v1/auth/logout',{
         headers: {
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
         }

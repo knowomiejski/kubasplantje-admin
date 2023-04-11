@@ -88,7 +88,7 @@ export const contactInfoSlice = createSlice({
 
 export const fetchAllContactInfos = createAsyncThunk<IContactInfo[]>('contactInfo/fetchAllContactInfos', async (contactInfo, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.get('http://localhost:8080/api/v1/contactinfo',
+    const response = await axios.get('https://admin.kubasplantje.nl:8443/api/v1/contactinfo',
     {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
@@ -99,7 +99,7 @@ export const fetchAllContactInfos = createAsyncThunk<IContactInfo[]>('contactInf
 
 export const updateContactInfo = createAsyncThunk<string, IContactInfo>('contactInfo/updateContactInfo', async (contactInfo: IContactInfo, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.patch('http://localhost:8080/api/v1/contactinfo', {
+    const response = await axios.patch('https://admin.kubasplantje.nl:8443/api/v1/contactinfo', {
         ...contactInfo
     },
     {

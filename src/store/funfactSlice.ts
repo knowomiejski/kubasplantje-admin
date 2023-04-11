@@ -139,7 +139,7 @@ export const funfactSlice = createSlice({
 
 export const fetchAllFunFacts = createAsyncThunk<IFunFact[]>('funfact/getAllFunFacts', async (funfact, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.get('http://localhost:8080/api/v1/funfact',
+    const response = await axios.get('https://admin.kubasplantje.nl:8443/api/v1/funfact',
     {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
@@ -150,7 +150,7 @@ export const fetchAllFunFacts = createAsyncThunk<IFunFact[]>('funfact/getAllFunF
 
 export const addNewFunFact = createAsyncThunk<string, IFunFact>('funfact/postNewFunFact', async (funfact: IFunFact, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.post('http://localhost:8080/api/v1/funfact', {
+    const response = await axios.post('https://admin.kubasplantje.nl:8443/api/v1/funfact', {
         ...funfact
     },
     {
@@ -164,7 +164,7 @@ export const addNewFunFact = createAsyncThunk<string, IFunFact>('funfact/postNew
 
 export const updateExistingFunFact = createAsyncThunk<string, IFunFact>('funfact/updateExistingFunFact', async (funfact: IFunFact, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.patch('http://localhost:8080/api/v1/funfact', {
+    const response = await axios.patch('https://admin.kubasplantje.nl:8443/api/v1/funfact', {
         ...funfact
     },
     {
@@ -178,7 +178,7 @@ export const updateExistingFunFact = createAsyncThunk<string, IFunFact>('funfact
 
 export const deleteFunFact = createAsyncThunk<string, number>('funfact/deleteFunFact', async (funfactId: number, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.delete(`http://localhost:8080/api/v1/funfact/${funfactId}`,
+    const response = await axios.delete(`https://admin.kubasplantje.nl:8443/api/v1/funfact/${funfactId}`,
     {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`

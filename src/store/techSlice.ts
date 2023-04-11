@@ -177,7 +177,7 @@ export const techSlice = createSlice({
 
 export const fetchAllTechs = createAsyncThunk<ITech[]>('tech/fetchAllTechs', async (tech, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.get('http://localhost:8080/api/v1/tech',
+    const response = await axios.get('https://admin.kubasplantje.nl:8443/api/v1/tech',
     {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('kp-login')}`
@@ -188,7 +188,7 @@ export const fetchAllTechs = createAsyncThunk<ITech[]>('tech/fetchAllTechs', asy
 
 export const addNewTech = createAsyncThunk<string, ITech>('tech/addNewTech', async (tech: ITech, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.post('http://localhost:8080/api/v1/tech',
+    const response = await axios.post('https://admin.kubasplantje.nl:8443/api/v1/tech',
     {
         ...tech,
         category: tech.category.toUpperCase()
@@ -203,7 +203,7 @@ export const addNewTech = createAsyncThunk<string, ITech>('tech/addNewTech', asy
 
 export const updateExistingTech = createAsyncThunk<string, ITech>('tech/updateTech', async (tech: ITech, {getState}) => {
     const state = getState() as RootState
-    const response = await axios.patch('http://localhost:8080/api/v1/tech',
+    const response = await axios.patch('https://admin.kubasplantje.nl:8443/api/v1/tech',
     {
         ...tech,
         category: tech.category.toUpperCase()
@@ -219,7 +219,7 @@ export const updateExistingTech = createAsyncThunk<string, ITech>('tech/updateTe
 export const deleteTech = createAsyncThunk<string, number>('tech/deleteTech', async (techId: number, {getState, rejectWithValue}) => {
     const state = getState() as RootState
     try {
-        const response = await axios.delete(`http://localhost:8080/api/v1/tech/${techId}`,
+        const response = await axios.delete(`https://admin.kubasplantje.nl:8443/api/v1/tech/${techId}`,
         {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('kp-login')}`
